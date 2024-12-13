@@ -1,0 +1,117 @@
+package tp3;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Cafe {
+
+    static Scanner scanner = new Scanner(System.in);
+    static ArrayList<String> commandes = new ArrayList<>();
+    static ArrayList<Integer> quantites = new ArrayList<>();
+    static double prixTotal = 0;
+
+    public static void main(String[] args) {
+
+        while (true) {
+            afficherMenu();
+            String choix = scanner.nextLine();
+
+            if (choix.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            switch (choix) {
+                case "1":
+                    ajouterCommande("Café noir", 8);
+                    break;
+                case "2":
+                    ajouterCommande("Café au lait", 9);
+                    break;
+                case "3":
+                    ajouterCommande("Thé à la Menthe", 8);
+                    break;
+                case "4":
+                    ajouterCommande("Jus d'Orange", 13);
+                    break;
+                case "5":
+                    ajouterCommande("Jus de Citron", 13);
+                    break;
+                case "6":
+                    ajouterCommande("Hawai", 10);
+                    break;
+                case "7":
+                    ajouterCommande("Top's", 10);
+                    break;
+                case "8":
+                    ajouterCommande("Ice", 10);
+                    break;
+                default:
+                    System.out.println("Choix invalide.");
+            }
+        }
+
+        imprimerFacture();
+    }
+
+    static void afficherMenu() {
+        System.out.println("\n--- Menu ---");
+        System.out.println("1. Café noir (8 MAD)");
+        System.out.println("2. Café au lait (9 MAD)");
+        System.out.println("3. Thé à la Menthe (8 MAD)");
+        System.out.println("4. Jus d'Orange (13 MAD)");
+        System.out.println("5. Jus de Citron (13 MAD)");
+        System.out.println("6. Hawai (10 MAD)");
+        System.out.println("7. Top's (10 MAD)");
+        System.out.println("8. Ice (10 MAD)");
+        System.out.println("q. Quitter (c'est tous)");
+        System.out.print("Votre choix : ");
+    }
+
+    static void ajouterCommande(String nom, double prix) {
+        System.out.print("Quantité : ");
+        int quantite = scanner.nextInt();
+        scanner.nextLine(); // Consommer le retour à la ligne
+
+        commandes.add(nom);
+        quantites.add(quantite);
+        prixTotal += prix * quantite;
+    }
+
+    static void imprimerFacture() {
+        if (commandes.isEmpty()) {
+            System.out.println("Aucune commande passée.");
+            return;
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+
+        System.out.println("\n--- Facture ---");
+        System.out.println("Date et heure : " + formattedDateTime);
+        System.out.println("------------------");
+
+        for (int i = 0; i < commandes.size(); i++) {
+            String commande = commandes.get(i);
+            int quantite = quantites.get(i);
+            double prixUnitaire = 0;
+            switch (commande) {
+                case "Café noir": prixUnitaire = 8; break;
+                case "Café au lait": prixUnitaire = 9; break;
+                case "Thé à la Menthe": prixUnitaire = 8; break;
+                case "Jus d'Orange": prixUnitaire = 13; break;
+                case "Jus de Citron": prixUnitaire = 13; break;
+                case "Hawai": prixUnitaire = 10; break;
+                case "Top's": prixUnitaire = 10; break;
+                case "Ice": prixUnitaire = 10; break;
+            }
+            double prixLigne = prixUnitaire * quantite;
+            System.out.println(commande + " x " + quantite + " : " + prixLigne + " MAD");
+        }
+
+        System.out.println("------------------");
+        System.out.println("Total : " + prixTotal + " MAD");
+    }
+}
